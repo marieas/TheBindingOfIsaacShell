@@ -50,9 +50,29 @@ namespace TheBindingOfIsaac
                 NewDirectionReceived(this,new EventArgs());
             }
         }
+
+        //metode som sjekker om isaac kommer borti et item eller en fiende
+        //
+        private void IntersectCheck()
+        {
+            isaac.PerformSafely(() =>
+            {
+                foreach (Control item in this.Controls)
+                {
+                    if (item is PictureBox && item.Name != "isaac")
+                    {
+                        if (isaac.Bounds.IntersectsWith(item.Bounds))
+                        {
+                            item.Hide();
+                        }
+                    }
+                }
+            });
+        }
         private void direction_received(object sender, EventArgs e)
         {
             MoveIsaac(currentDirection);
+            IntersectCheck();
         }
         //Må legge til alle retninger isaac kan gå
         private void Form1_KeyDown(object sender, KeyEventArgs e)
@@ -71,11 +91,13 @@ namespace TheBindingOfIsaac
             //Her må du ha en sjekk på hvilken retning man skal flytte isaac,
             // og øke/minske x, y koordinater ut ifra det. Eksempelet under
             // viser at isaac flytter seg til høyre ( x-aksens verdi øker)
-            isaac.PerformSafely(()=>isaac.Location = new Point(xLocation + 2, yLocation));
+            isaac.PerformSafely(()=>isaac.Location = new Point(xLocation + 10, yLocation));
           
         }
 
+        private void isaac_Click(object sender, EventArgs e)
+        {
 
-
+        }
     }
 }
